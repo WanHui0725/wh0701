@@ -1,0 +1,160 @@
+package World;
+
+class Hero {
+    public int no;
+    public String name;
+    public String nickname;
+    public Hero next;// 指向下一个节点
+    public Hero pre;// 指向前一个节点
+    // 构造器
+    public Hero(int no, String name, String nickname) {
+        this.no = no;
+        this.name = name;
+        this.nickname = nickname;
+    }
+    public String toString() {
+        return "HeroNode [no=" + no + ", name=" + name + ", nickname=" + nickname + "]";
+    }
+}
+//创建一个双向链表的类
+class DoubleLinkedList {
+    // 初始化一个头节点 不存放具体数据
+    private Hero head = new Hero(0, "", "");
+
+    // 添加节点到双向链表
+    public void add(Hero hero) {
+        // 当不考虑编号的顺序时:
+        // 1、找到当前链表的最后节点
+        // 2、将最后这个节点的next域指向新的节点即可
+
+        // 因为head头节点不能动，因此我们需要一个辅助节点temp
+        Hero temp = head;
+        // 遍历链表，找到尾节点
+        while (true) {
+            // 找到链表的尾节点
+            if (temp.next == null) {
+                break;
+            }
+            // 如果不是尾节点，将temp后移
+            temp = temp.next;
+        }
+
+        // 循环结束后，temp指向的是尾节点
+        // 形成一个双向链表
+        temp.next = hero;
+        hero.pre = temp;
+    }
+
+    // 修改节点的信息，根据no编号来修改
+    public void update(Hero newHero) {
+        // 根据newHeroNode的编号进行修改
+        // 判断链表是否为空
+        if (head == null) {
+            System.out.println("链表为空");
+            return;
+        }
+        // 找到需要修改的节点
+        // 定义辅助节点
+        Hero temp = head.next;
+        boolean flag = false;// 表示是否找到该节点
+        while (true) {
+            if (temp == null) {
+                break;// 链表遍历结束
+            }
+            if (temp.no == newHero.no) {
+                // 找到需要修改的节点
+                flag = true;
+                break;
+            }
+            temp = temp.next;// 将temp后移
+        }
+        // 根据flag判断是否已经找到要修改的节点
+        if (flag) {
+            temp.name = newHero.name;
+            temp.nickname = newHero.nickname;
+        } else {
+            // 没有找到节点
+            System.out.println("没有找到");
+        }
+    }
+    // 从双向链表中删除一个节点
+    // 对于双向链表可以直接找到要删除的节点，自我删除即可
+    public void delete(int no) {
+        // 判断当前链表是否为空
+        if (head.next == null) {
+            System.out.println("链表为空，无法删除");
+            return;
+        }
+        // 定义辅助节点
+        Hero temp = head.next;
+        boolean flag = false;// 是否找到待删除节点的前一个节点
+        while (true) {
+            if (temp == null) {
+                // 遍历结束
+                break;
+            }
+            if (temp.no == no) {
+                // 找到
+                flag = true;
+                break;
+            }
+            temp = temp.next;// 将temp后移
+        }
+        // 判断flag
+        if (flag) {
+            // 找到
+            // 可以删除
+            temp.pre.next = temp.next;
+            // 如果要删除的节点是最后一个节点，则不需要执行该条代码
+            if (temp.next != null) {
+                temp.next.pre = temp.pre;
+            }
+        } else {
+            // 未找到
+            System.out.println("要删除的节点不存在");
+        }
+    }
+    // 遍历双向链表
+    public void list() {
+        // 判断链表是否为空
+        if (head.next == null) {
+            System.out.println("链表为空");
+            return;
+        }
+        // 创建一个辅助节点
+        Hero temp = head.next;
+        while (true) {
+            // 判断是否到了链表末尾
+            if (temp == null) {
+                break;
+            }
+            // 输出节点信息
+            System.out.println(temp);
+            // 将temp后移
+            temp = temp.next;
+        }
+    }
+    public static void main(String[] args) {
+        // 创建节点
+        Hero hero1 = new Hero(1, "宋江", " 及时雨");
+        Hero hero2 = new Hero(2, "卢俊义", "玉麒麟");
+        Hero hero3 = new Hero(3, "吴用", "智多星");
+        Hero hero4 = new Hero(4, "林冲", "豹子头");
+        //创建一个双向链表
+        DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+        //添加节点
+        doubleLinkedList.add(hero1);
+        doubleLinkedList.add(hero2);
+        doubleLinkedList.add(hero3);
+        doubleLinkedList.add(hero4);
+        //修改
+        Hero newHero = new Hero(4, "公孙胜", "入云龙");
+        doubleLinkedList.update(newHero);
+        //删除
+        doubleLinkedList.delete(1);
+        //遍历
+        doubleLinkedList.list();
+    }
+}/*创建了节点，删除了1号，将第四号修改了，满足了增添修改查四个功能。
+原文链接：https://blog.csdn.net/qq_42453117/article/details/98860344
+看懂后复制过来*/
