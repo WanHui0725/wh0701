@@ -1,0 +1,6 @@
+package World;
+public class MyException extends Exception{  //创建自定义异常
+    public MyException(String ErrorExceptin){	//构造方法
+        super(ErrorExceptin);		//父类构造方法
+    }
+}

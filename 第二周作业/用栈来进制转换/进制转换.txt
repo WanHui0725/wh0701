@@ -1,0 +1,104 @@
+package World;
+import java.util.Scanner;
+public class Hero {
+    int max;
+    int len;
+    int[]data;
+    String[]da;
+    int top;
+    public Hero(int m){
+        this.max=m;
+        this.data=new int[m];
+        this.top=-1;
+        this.len=0;
+        this.da=new String[m];
+    }
+    public boolean push(int t){
+        if(this.len==this.max){
+            System.out.println("Push failed.");
+            return false;
+        }
+        top++;
+        len++;
+        data[top]=t;
+        return true;
+    }
+    public boolean pu(String t){
+        if(this.len==this.max){
+            System.out.println("Push failed.");
+            return false;
+        }
+        top++;
+        len++;
+        da[top]=t;
+        return true;
+    }
+    public int pop(){
+        int t=data[top];
+        top--;
+        len--;
+        return t;
+    }
+    public Hero Ten_2(int x){//十进制转为二进制.10->2;
+        Hero s=new Hero(this.max*4);
+        while (x!=0){
+            s.push(x%2);
+            x/=2;
+        }
+        for(int i=0;s.len!=0;i++)
+        {
+            System.out.print(s.pop());
+        }
+        System.out.print("  ");
+        return s;
+    }
+    public Hero Ten_8(int x){//十进制转为八进制.10->8;
+        Hero s=new Hero(this.max*4);
+        while (x!=0){
+            s.push(x%8);
+            x/=8;
+        }
+        for(int i=0;s.len!=0;i++)
+        {
+            System.out.print(s.pop());
+        }
+        System.out.print("  ");
+        return s;
+    }
+    public Hero Ten_16(int x){//十进制转为十六进制.10->16;
+        Hero s=new Hero(this.max*4);
+        while (x!=0){
+            int m=x%16;
+            if(m<10){
+                s.push((char)m);
+            }
+            else {
+                switch (m){
+                    case 10: s.pu("A");break;
+                    case 11: s.pu("B");break;
+                    case 12: s.pu("C");break;
+                    case 13: s.pu("D");break;
+                    case 14: s.pu("E");break;
+                    case 15: s.pu("F");break;
+                }
+            }
+            x/=16;
+        }
+        for(int i=0;s.len!=0;i++)
+        {
+            System.out.print(s.pop());
+        }
+        System.out.print("  ");
+        return s;
+    }
+    public static void main(String[] args){
+        Scanner sc=new Scanner(System.in);
+        int x=sc.nextInt();
+        Hero s=new Hero(x);
+        System.out.println(s.Ten_2(x));
+        System.out.println(s.Ten_8(x));
+        System.out.println(s.Ten_16(x));
+    }
+}/*原文链接：https://blog.csdn.net/weixin_44963741/article/details/104566668
+在此基础上自己改动了不少
+*/
