@@ -1,0 +1,85 @@
+use day1;
+select database();
+create table student(
+    id int,
+    studentname varchar(20),
+    borthYear_month float,
+    sex varchar(20)
+);
+create table score(
+    id int,
+    subjectNumber int,
+    chengji int
+);
+create table course(
+    subjectNumber int,
+    subjectname varchar(20),
+    teacherNumber int
+);
+create table teacher(
+    teacherNumber int,
+    teachername varchar(20)
+);
+
+/*学生表*/
+insert into student(id, studentname,borthYear_month,sex) value (1,'张三',2002.2,'boy');
+insert into student(id, studentname,borthYear_month,sex) value (2,'李四',2002.1,'girl');
+insert into student(id, studentname,borthYear_month,sex) value (3,'王二',2002.3,'girl');
+insert into student(id, studentname,borthYear_month,sex) value (4,'万五',2002.7,'boy');
+insert into student(id, studentname,borthYear_month,sex) value (5,'陈六',2002.9,'girl');
+
+/*成绩表*/
+insert into score(id, subjectNumber, chengji) value (1,1,50);
+insert into score(id, subjectNumber, chengji) value (1,2,20);
+insert into score(id, subjectNumber, chengji) value (1,3,40);
+insert into score(id, subjectNumber, chengji) value (2,1,40);
+insert into score(id, subjectNumber, chengji) value (2,2,50);
+insert into score(id, subjectNumber, chengji) value (2,3,60);
+insert into score(id, subjectNumber, chengji) value (3,1,40);
+insert into score(id, subjectNumber, chengji) value (3,2,40);
+insert into score(id, subjectNumber, chengji) value (3,3,50);
+insert into score(id, subjectNumber, chengji) value (4,1,80);
+insert into score(id, subjectNumber, chengji) value (4,2,90);
+insert into score(id, subjectNumber, chengji) value (4,3,90);
+insert into score(id, subjectNumber, chengji) value (5,1,90);
+insert into score(id, subjectNumber, chengji) value (5,2,70);
+insert into score(id, subjectNumber, chengji) value (5,3,100);
+
+/*课程表*/
+insert into course(subjectNumber, subjectname, teacherNumber) value (1,'语文',1);
+insert into course(subjectNumber, subjectname, teacherNumber) value (2,'数学',2);
+insert into course(subjectNumber, subjectname, teacherNumber) value (3,'英文',3);
+
+/*教师表*/
+insert into teacher(teacherNumber, teachername) value (1,'老李');
+insert into teacher(teacherNumber, teachername) value (2,'老王');
+insert into teacher(teacherNumber, teachername) value (3,'老张');
+
+select * from student;
+select * from score;
+select * from course;
+select * from teacher;
+
+/*查询各科成绩最高与最低*/
+select co.subjectNumber
+,max(sc.chengji)'最高分'
+,min(sc.chengji)'最低分'
+from score as co
+left join
+score as sc ON co.subjectNumber=sc.subjectNumber
+GROUP BY co.subjectNumber;
+
+/*查询学生总成绩并且排名*/
+select st.id,st.studentname,(case when sum(sc.chengji) is null then 0 else sum(sc.chengji) end)as '总成绩'
+from student st
+left join score sc on sc.id=st.id
+group by st.id order by sum(sc.chengji)desc ;
+
+/*查询总平均成绩大于60的学号与学生姓名*/
+SELECT st.id,st.studentname,round(avg(sc.chengji),2)
+from student st
+LEFT JOIN score sc ON sc.id=st.id
+GROUP BY st.id HAVING AVG(sc.chengji)>=60;
+
+/*第一次接触mysql，写了两天，终于完美搞定，好耶*/
+
